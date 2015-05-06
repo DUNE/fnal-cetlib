@@ -1,13 +1,15 @@
-parent cetlib v1_09_00
+parent cetlib v1_12_01
 defaultqual e7
 #
 libdir	fq_dir lib
 fcldir  -
+perllib  product_dir
+
 # define product/version pairs
 product	version
-cpp0x	v1_04_09
+cpp0x	v1_04_10
 
-cetbuildtools	v4_07_02	-	only_for_build
+cetbuildtools	v4_10_02	-	only_for_build
 end_product_list
 
 
@@ -22,6 +24,11 @@ e7:prof		e7:prof		gcc
 i1:debug	i1:debug	icc
 i1:prof		i1:prof		icc
 end_qualifier_list
+
+##table_fragment_begin
+##    # For cetskelgen modules.
+##    envPrepend(PERL5LIB, ${${UPS_PROD_NAME_UC}_DIR}/perllib)
+##table_fragment_end
 
 # Local Variables:
 # tab-width: 8

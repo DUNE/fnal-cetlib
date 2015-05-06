@@ -35,7 +35,7 @@ class cet::map_vector_key
 {
 public:
   // c'tors:
-  map_vector_key( )                            : key_(-1)   { }
+  map_vector_key( )                            : key_(-1l)   { }
   explicit map_vector_key( int           key );
   explicit map_vector_key( unsigned      key ) : key_(key)  { }
   explicit map_vector_key( unsigned long key );
@@ -43,12 +43,12 @@ public:
   // use compiler-generated copy c'tor, copy assignment, and d'tor
 
   // observers:
-  unsigned  asInt ( ) const  { return key_; }
-  unsigned  asUint( ) const  { return key_; }
+  unsigned long asInt ( ) const  { return key_; }
+  unsigned long asUint( ) const  { return key_; }
   void ensure_valid() const;
 
 private:
-  unsigned key_;
+  unsigned long key_;
 
 };  // map_vector_key
 
@@ -67,17 +67,12 @@ inline
 cet::map_vector_key::map_vector_key( unsigned long key )
   : key_(key)
 {
-  if (key != key_) {
-    throw cet::exception("InvalidKey")
-      << "Key " << key
-      << " too large for map_vector_key.";
-  }
 }
 
 inline
 void
 cet::map_vector_key::ensure_valid() const {
-  if (key_ == static_cast<unsigned>(-1)) { // Invalid key
+  if (key_ == static_cast<unsigned long>(-1)) { // Invalid key
     throw cet::exception("InvalidKey")
       << "Attempt to use an invalid cet::map_vector_key.";
   }
@@ -147,17 +142,24 @@ public:
   mapped_type const &  at          ( key_type key ) const  { return getOrThrow(key); }
 
   // iterators:
-  iterator        begin( )        { return v_.begin(); };
+  iterator        begin( )        { return v_.begin(); }
   const_iterator  begin( ) const  { return v_.begin(); }
 
-  iterator        end( )        { return v_.end(); };
+  iterator        end( )        { return v_.end(); }
   const_iterator  end( ) const  { return v_.end(); }
 
-  reverse_iterator        rbegin( )        { return v_.rbegin(); };
+  reverse_iterator        rbegin( )        { return v_.rbegin(); }
   const_reverse_iterator  rbegin( ) const  { return v_.rbegin(); }
 
-  reverse_iterator        rend( )        { return v_.rend(); };
+  reverse_iterator        rend( )        { return v_.rend(); }
   const_reverse_iterator  rend( ) const  { return v_.rend(); }
+
+#ifndef __GCCXML__
+  const_iterator cbegin( ) const  { return v_.cbegin();}
+  const_iterator cend( )   const  { return v_.cend();}
+  const_reverse_iterator crbegin( ) const  { return v_.crbegin();}
+  const_reverse_iterator crend( )   const  { return v_.crend();}
+#endif
 
   // mutators:
   void  clear( )  { v_.clear(); }
@@ -402,3 +404,7 @@ bool
 // ======================================================================
 #endif /* GCCXML */
 #endif
+
+// Local variables:
+// mode: c++
+// End:
